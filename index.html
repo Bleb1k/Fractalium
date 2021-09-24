@@ -1,2 +1,22 @@
 <!DOCTYPE html>
-<meta http-equiv="refresh" content="0; url=https://bleb1k.github.io/Fractalium/public/index.html">
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Fractalium</title>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+<body>
+  <main>
+    <canvas id="frame"></canvas>
+    <canvas id="fractal" onmousedown="press(event)" onmouseup="unpress(event)" onmousemove="move(event)"></canvas>
+    <script src="./public/main.js"></script>
+  </main>
+</body>
+
+</html>
