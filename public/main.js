@@ -104,12 +104,12 @@ function press(evt) {
     }
 }
 function unpress(evt) {
+    frame.style.left = '0px';
+    frame.style.top = '0px';
+    frame.style.width = '0px';
+    frame.style.height = '0px';
+    frame.style.border = '0px white double';
     if (evt.button === 0) {
-        frame.style.left = '0px';
-        frame.style.top = '0px';
-        frame.style.width = '0px';
-        frame.style.height = '0px';
-        frame.style.border = '0px white double';
         within = evt.offsetX < w && evt.offsetY < h;
         if (evt.path[0] = cnvMain) {
             ok[1] = true;
