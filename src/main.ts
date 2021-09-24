@@ -78,48 +78,52 @@ let iterate = async function(w: number, xn: number, yn: number, ix: number, iy: 
     }
 }
 
-function press(evt: { offsetX: number; offsetY: number; path: HTMLCanvasElement[]; }) {
-    frame.style.border = '1px rgb(255, 240, 243) double'
-    frame.style.left = '0px';
-    frame.style.top = '0px';
-    frame.style.width = '0px';
-    frame.style.height = '0px';
-    fr.x = evt.offsetX; fr.y = evt.offsetY
-    if (evt.path[0] = cnvMain) { ok[0] = true }
-    within = evt.offsetX < w && evt.offsetY < h;
-    if (within) {
-        ta = [
-            map(evt.offsetY, 0, h, dot.x, dot.w),
-            map(evt.offsetX, 0, w, dot.y, dot.h)
-        ]
-    }
-    if(w < window.innerWidth) {
-        offset = (window.innerWidth-w)/2
+function press(evt: { offsetX: number; offsetY: number; path: HTMLCanvasElement[]; button: number; }) {
+    if(evt.button === 0) {
+        frame.style.border = '1px rgb(255, 240, 243) double'
+        frame.style.left = '0px';
+        frame.style.top = '0px';
+        frame.style.width = '0px';
+        frame.style.height = '0px';
+        fr.x = evt.offsetX; fr.y = evt.offsetY
+        if (evt.path[0] = cnvMain) { ok[0] = true }
+        within = evt.offsetX < w && evt.offsetY < h;
+        if (within) {
+            ta = [
+                map(evt.offsetY, 0, h, dot.x, dot.w),
+                map(evt.offsetX, 0, w, dot.y, dot.h)
+            ]
+        }
+        if(w < window.innerWidth) {
+            offset = (window.innerWidth-w)/2
+        }
     }
 }
 
-function unpress(evt: { path: HTMLCanvasElement[]; offsetX: number; offsetY: number; }) {
-    frame.style.left = '0px'
-    frame.style.top = '0px'
-    frame.style.width = '0px'
-    frame.style.height = '0px'
-    frame.style.border = '0px white double'
-    within = evt.offsetX < w && evt.offsetY < h;
-    if (evt.path[0] = cnvMain) { ok[1] = true }
-    if (within && evt.offsetX < w && evt.offsetY < h) {
-        tb = [
-            map(evt.offsetY, 0, h, dot.x, dot.w),
-            map(evt.offsetX, 0, w, dot.y, dot.h)
-        ]
-        dot.x = Math.min(ta[0], tb[0])
-        dot.y = Math.min(ta[1], tb[1])
-        dot.w = Math.max(ta[0], tb[0])
-        dot.h = Math.max(ta[1], tb[1])
-        len = ((Math.abs(Math.max(fr.x, evt.offsetX) - Math.min(fr.x, evt.offsetX)) / Math.abs(Math.max(fr.y, evt.offsetY) - Math.min(fr.y, evt.offsetY))));
-        w = Math.floor(len * h);
-        resizeCanvas(w, h);
+function unpress(evt: { path: HTMLCanvasElement[]; offsetX: number; offsetY: number; button: number; }) {
+    if(evt.button === 0) {
+        frame.style.left = '0px'
+        frame.style.top = '0px'
+        frame.style.width = '0px'
+        frame.style.height = '0px'
+        frame.style.border = '0px white double'
+        within = evt.offsetX < w && evt.offsetY < h;
+        if (evt.path[0] = cnvMain) { ok[1] = true }
+        if (within && evt.offsetX < w && evt.offsetY < h) {
+            tb = [
+                map(evt.offsetY, 0, h, dot.x, dot.w),
+                map(evt.offsetX, 0, w, dot.y, dot.h)
+            ]
+            dot.x = Math.min(ta[0], tb[0])
+            dot.y = Math.min(ta[1], tb[1])
+            dot.w = Math.max(ta[0], tb[0])
+            dot.h = Math.max(ta[1], tb[1])
+            len = ((Math.abs(Math.max(fr.x, evt.offsetX) - Math.min(fr.x, evt.offsetX)) / Math.abs(Math.max(fr.y, evt.offsetY) - Math.min(fr.y, evt.offsetY))));
+            w = Math.floor(len * h);
+            resizeCanvas(w, h);
+        }
+        offset = 0
     }
-    offset = 0
 }
 
 function move(evt: { offsetX: number; offsetY: number; }) {
