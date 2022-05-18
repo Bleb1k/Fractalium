@@ -13,7 +13,16 @@ class DrawingApp {
   private clickX: number
   private clickY: number
 
-  private settings = [-0.5, 0, 2, window.innerWidth, window.innerHeight]
+  private settings = [
+    -0.5,
+    0,
+    2,
+    window.innerWidth,
+    window.innerHeight,
+    Math.random() * 0.01 + 0.995,
+    Math.random() * 0.01 + 0.995,
+    Math.random() * 0.01 + 0.995,
+  ]
 
   constructor() {
     let body = document.getElementsByTagName('body')[0]
@@ -37,34 +46,46 @@ class DrawingApp {
 
   private createFractFn() {
     return this.gpu
-      .createKernel(function (data) {
-        let x = (data as number[])[0]
-        let y = (data as number[])[1]
-        let w = (data as number[])[3]
-        let h = (data as number[])[4]
-        let dx = (data as number[])[2]
+      .createKernel(function (data: number[]) {
+        let x = data[0]
+        let y = data[1]
+        let w = data[3]
+        let h = data[4]
+        let dx = data[2]
         let dy = dx * (h / w)
+        let rMult = data[5]
+        let gMult = data[6]
+        let bMult = data[7]
 
         let xn = map(this.thread.x, 0, w, x - dx, x + dx)
         let yn = map(this.thread.y, 0, h, y - dy, y + dy)
         let xo = xn
         let yo = yn
+        let mo = xo ** 2 + yo ** 2
+        let smallest = 2.1
         for (let iter = 150; iter > 0; iter--) {
           let xt = xn * xn - yn * yn + xo
           yn = 2 * xn * yn + yo
           xn = xt
           let m = yn * yn + xn * xn
+          if (Math.sqrt(m) < smallest) smallest = Math.sqrt(m)
           if (m > 4) {
             this.color(
-              Math.sin((iter + 0) / 15),
-              Math.sin((iter + 0) / 10),
-              Math.sin((iter + 0) / 20),
+              (Math.sin(rMult * iter + 0) + 1) / 2 - m / 64,
+              (Math.sin(gMult * iter + 1) + 1) / 2 - m / 64,
+              (Math.sin(bMult * iter + 2) + 1) / 2 - m / 64,
               1
             )
             break
           }
           if (iter == 1) {
-            this.color(0.36, 1, 0.33, 1)
+            this.color(
+              1 - Math.sinh(Math.abs(smallest ** 0.5)),
+              1 - Math.sinh(Math.abs(smallest ** 0.5)),
+              1 - Math.sinh(Math.abs(smallest ** 0.5)),
+              1
+            )
+            // this.color(0.36, 1, 0.33, 1)
             break
           }
         }
