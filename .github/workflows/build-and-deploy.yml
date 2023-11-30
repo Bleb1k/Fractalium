@@ -1,5 +1,8 @@
 name: NodeJS with Webpack
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 on:
   push:
     branches: [ "main" ]
@@ -28,4 +31,6 @@ jobs:
       run: |
         npm install
         npm run build
+        git config user.name 'Bleb1k'
+        git config user.email 'Bleb1k@users.noreply.github.com'
         npm run deploy
